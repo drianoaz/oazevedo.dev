@@ -1,0 +1,48 @@
+{
+  "editor.formatOnSave": false,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+  /**
+   *  use prettier and eslint together in the editor
+   *
+   * @see https://github.com/prettier/prettier-vscode/issues/1277#issuecomment-621175180
+   * @see https://github.com/rohit-gohri/vscode-format-code-action#motivation
+   * @see https://rohit.page/blog/posts/how-to-get-prettier-eslint-play-nicely-with-vscode/?utm_source=github&utm_medium=repo&utm_campaign=hf
+   */
+  "editor.codeActionsOnSave": ["source.formatDocument", "source.fixAll.eslint"],
+
+  /**
+   * even using the editorconfig extension, some people who are using windows
+   * have inconsistencies regarding the end of line character, where vscode always
+   * tries to convert to CRLF disrespecting the settings of the .editorconfig file
+   */
+  "files.eol": "\n",
+
+  /**
+   *  associate svg files with html files for the prettier formats it in the same way
+   */
+  "files.associations": {
+    "*.svg": "html"
+  },
+
+  /**
+   * Force to use the typescript version specified into the project
+   */
+  "typescript.tsdk": "node_modules/typescript/lib",
+
+  /**
+   * Tailwind IntelliSense
+   *
+   * @see https://github.com/tailwindlabs/prettier-plugin-tailwindcss?tab=readme-ov-file#sorting-classes-in-function-calls
+   * @see https://cva.style/docs/getting-started/installation#intellisense
+   */
+  "tailwindCSS.classFunctions": ["clsx", "cva", "cx"],
+
+  /**
+   * prettier 3.0 and prettier-vscode v10.1.0 won't load plugins
+   *
+   * @see https://github.com/prettier/prettier-vscode/issues/3104#issuecomment-1875404874
+   */
+  "prettier.requireConfig": true,
+  "prettier.configPath": "./.prettierrc.json"
+}

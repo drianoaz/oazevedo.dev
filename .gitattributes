@@ -1,0 +1,4 @@
+# forces the end of lines from all text files
+# to be lf to keep a consistent pattern
+# independent of operating system
+* text=auto eol=lf
