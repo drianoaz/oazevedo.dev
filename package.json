@@ -43,5 +43,10 @@
   "lint-staged": {
     "*": "prettier --ignore-unknown --write",
     "*.{js,jsx,ts,tsx,mjs,cjs}": "eslint --max-warnings 0 --cache --fix"
-  }
+  },
+  "engines": {
+    "node": "^22.18.0",
+    "npm": "^10.9.3"
+  },
+  "packageManager": "npm@10.9.3"
 }
