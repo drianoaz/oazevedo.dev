@@ -1,3 +1,5 @@
+'use client';
+
 import Sample from './sample.mdx';
 
 export default function SamplePage() {
