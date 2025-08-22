@@ -7,6 +7,8 @@ import {
 } from '@shikijs/transformers';
 import type { EvaluateOptions } from 'next-mdx-remote-client/rsc';
 import { serialize } from 'next-mdx-remote-client/serialize';
+import rehypeAutolinkHeadings from 'rehype-autolink-headings';
+import rehypeSlug from 'rehype-slug';
 import remarkGfm from 'remark-gfm';
 import { transformerCodeBlock } from '@/lib/shiki/transformer-code-block';
 import { transformerMetaDiff } from '@/lib/shiki/transformer-meta-diff';
@@ -52,6 +54,20 @@ export function serializeMDX(source: string) {
               transformerMetaHighlight(),
               transformerCodeBlock(),
             ],
+          },
+        ],
+        [rehypeSlug],
+        [
+          rehypeAutolinkHeadings,
+          {
+            behavior: 'wrap',
+            headingProperties: {
+              className: 'scroll-mt-6',
+            },
+            properties: {
+              target: '_self',
+              className: 'linked-heading no-underline',
+            },
           },
         ],
       ],
