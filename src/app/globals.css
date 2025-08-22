@@ -64,4 +64,11 @@
   span.shiki {
     @apply bg-transparent!;
   }
+
+  .prose :is(h1, h2, h3, h4, h5, h6) a:is(:hover, :focus, :active)::before,
+  .prose :is(h1, h2, h3, h4, h5, h6):is(:target, :focus) a::before {
+    content: '#';
+    transform: translate(-1em);
+    @apply absolute opacity-70 max-lg:hidden;
+  }
 }
