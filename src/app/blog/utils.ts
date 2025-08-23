@@ -9,6 +9,7 @@ import type { EvaluateOptions } from 'next-mdx-remote-client/rsc';
 import { serialize } from 'next-mdx-remote-client/serialize';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeSlug from 'rehype-slug';
+import remarkFlexibleToc, { TocItem } from 'remark-flexible-toc';
 import remarkGfm from 'remark-gfm';
 import { transformerCodeBlock } from '@/lib/shiki/transformer-code-block';
 import { transformerMetaDiff } from '@/lib/shiki/transformer-meta-diff';
@@ -38,10 +39,18 @@ export function getBlogPosts() {
   return getMDXData(path.join(process.cwd(), 'src', 'app', 'blog', 'posts'));
 }
 
+export type Scope = {
+  toc?: TocItem[];
+};
+
+export type Frontmatter = {
+  title: string;
+};
+
 export function serializeMDX(source: string) {
   const options: EvaluateOptions = {
     mdxOptions: {
-      remarkPlugins: [remarkGfm],
+      remarkPlugins: [remarkGfm, [remarkFlexibleToc, { maxDepth: 3 }]],
       rehypePlugins: [
         [
           rehypeShiki,
@@ -73,9 +82,10 @@ export function serializeMDX(source: string) {
       ],
     },
     parseFrontmatter: true,
+    vfileDataIntoScope: 'toc',
   };
 
-  return serialize({
+  return serialize<Frontmatter, Scope>({
     source,
     options,
   });
