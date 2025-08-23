@@ -11,6 +11,7 @@ import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeSlug from 'rehype-slug';
 import remarkFlexibleToc, { TocItem } from 'remark-flexible-toc';
 import remarkGfm from 'remark-gfm';
+import readingTime from 'remark-reading-time';
 import { transformerCodeBlock } from '@/lib/shiki/transformer-code-block';
 import { transformerMetaDiff } from '@/lib/shiki/transformer-meta-diff';
 
@@ -41,16 +42,28 @@ export function getBlogPosts() {
 
 export type Scope = {
   toc?: TocItem[];
+  readingTime?: {
+    text: string;
+    minutes: number;
+    time: number;
+    words: number;
+  };
 };
 
 export type Frontmatter = {
   title: string;
+  summary?: string;
+  publishedAt?: string;
 };
 
 export function serializeMDX(source: string) {
   const options: EvaluateOptions = {
     mdxOptions: {
-      remarkPlugins: [remarkGfm, [remarkFlexibleToc, { maxDepth: 3 }]],
+      remarkPlugins: [
+        remarkGfm,
+        [remarkFlexibleToc, { maxDepth: 3 }],
+        readingTime,
+      ],
       rehypePlugins: [
         [
           rehypeShiki,
@@ -82,7 +95,7 @@ export function serializeMDX(source: string) {
       ],
     },
     parseFrontmatter: true,
-    vfileDataIntoScope: 'toc',
+    vfileDataIntoScope: ['toc', 'readingTime'],
   };
 
   return serialize<Frontmatter, Scope>({
