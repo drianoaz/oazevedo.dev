@@ -52,6 +52,7 @@
     "rehype-autolink-headings": "^7.1.0",
     "rehype-slug": "^6.0.0",
     "remark-flexible-toc": "^1.2.0",
+    "remark-reading-time": "^2.0.2",
     "tailwindcss": "^4.1.11",
     "typescript": "^5.9.2",
     "typescript-eslint": "^8.39.0"
