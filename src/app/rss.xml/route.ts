@@ -11,7 +11,7 @@ export async function GET() {
     id: baseUrl,
     link: baseUrl,
     language: 'pt-BR',
-    image: `${baseUrl}/og?title=${siteName}`,
+    image: `${baseUrl}/og?title=${encodeURIComponent(siteName)}`,
     favicon: `${baseUrl}/favicon.ico`,
     copyright: `Todos os direitos reservados ${new Date().getFullYear()}, Adriano de Azevedo`,
     author: {
@@ -36,7 +36,10 @@ export async function GET() {
         title: post.metadata.title,
         id: `${baseUrl}/blog/${post.slug}`,
         link: `${baseUrl}/blog/${post.slug}`,
-        image: `${baseUrl}/og?title=${encodeURIComponent(post.metadata.title)}`,
+        image: {
+          url: `${baseUrl}/og?title=${encodeURIComponent(post.metadata.title)}`,
+          type: 'image/png',
+        },
         description: post.metadata.summary,
         date: new Date(post.metadata.publishedAt),
       });
