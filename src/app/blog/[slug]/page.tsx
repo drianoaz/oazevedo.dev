@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation';
-import { getBlogPosts, serializeMDX } from '../utils';
+import { getBlogPosts } from '../utils';
 import { BlogContent } from './blog-content';
 
 export async function generateStaticParams() {
@@ -24,7 +24,5 @@ export default async function Blog({ params }: BlogProps) {
     notFound();
   }
 
-  const mdxSource = await serializeMDX(post.content);
-
-  return <BlogContent mdxSource={mdxSource} />;
+  return <BlogContent {...post} />;
 }
