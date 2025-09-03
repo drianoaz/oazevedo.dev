@@ -5,6 +5,7 @@ import { MDXClient } from 'next-mdx-remote-client';
 import type { SerializeResult } from 'next-mdx-remote-client/serialize';
 import { components } from '@/components/mdx';
 import { TableOfContents } from '@/components/table-of-contents';
+import { baseUrl } from '@/lib/constants';
 import { Metadata, Scope } from '../utils';
 
 type ContentProps = {
@@ -14,7 +15,12 @@ type ContentProps = {
   scope: Scope;
 };
 
-export function BlogContent({ mdxSource, metadata, scope }: ContentProps) {
+export function BlogContent({
+  mdxSource,
+  metadata,
+  scope,
+  slug,
+}: ContentProps) {
   if ('error' in mdxSource) {
     throw new Error(mdxSource.error.message, {
       cause: mdxSource.error,
@@ -25,6 +31,26 @@ export function BlogContent({ mdxSource, metadata, scope }: ContentProps) {
 
   return (
     <section className="mx-auto grid grid-cols-[1fr_auto_1fr]">
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'BlogPosting',
+            headline: title,
+            datePublished: publishedAt,
+            dateModified: publishedAt,
+            description: summary,
+            image: `${baseUrl}/og?title=${encodeURIComponent(title)}`,
+            url: `${baseUrl}/blog/${slug}`,
+            author: {
+              '@type': 'Person',
+              name: 'Adriano de Azevedo',
+            },
+          }),
+        }}
+      />
       <header className="col-start-2 col-end-3 mx-auto prose prose-xl px-4 py-12 prose-invert">
         <h1>{title}</h1>
         {summary && (
