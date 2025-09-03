@@ -24,7 +24,7 @@ export function BlogContent({ mdxSource, metadata, scope }: ContentProps) {
   const { title, summary, publishedAt } = metadata;
 
   return (
-    <main className="mx-auto grid grid-cols-[1fr_auto_1fr]">
+    <section className="mx-auto grid grid-cols-[1fr_auto_1fr]">
       <header className="col-start-2 col-end-3 mx-auto prose prose-xl px-4 py-12 prose-invert">
         <h1>{title}</h1>
         {summary && (
@@ -56,6 +56,6 @@ export function BlogContent({ mdxSource, metadata, scope }: ContentProps) {
       <aside className="col-start-3 row-start-2">
         <TableOfContents toc={scope.toc ?? []} />
       </aside>
-    </main>
+    </section>
   );
 }
