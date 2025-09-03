@@ -63,8 +63,8 @@ export type Scope = {
 
 export type Metadata = {
   title: string;
-  summary?: string;
-  publishedAt?: string;
+  summary: string;
+  publishedAt: string;
 };
 
 function serializeMDX(source: string) {
