@@ -25,15 +25,26 @@ function readMDXFile(filePath: string) {
   return fs.readFileSync(filePath, 'utf-8');
 }
 
-function getMDXData(dir: string) {
+async function getMDXData(dir: string) {
   const mdxFiles = getMDXFiles(dir);
 
-  return mdxFiles.map((file) => {
-    const content = readMDXFile(path.join(dir, file));
-    const slug = path.basename(file, path.extname(file));
+  const posts = await Promise.all(
+    mdxFiles.map(async (file) => {
+      const content = readMDXFile(path.join(dir, file));
+      const slug = path.basename(file, path.extname(file));
+      const mdxSource = await serializeMDX(content);
 
-    return { content, slug };
-  });
+      return {
+        content,
+        slug,
+        mdxSource,
+        metadata: mdxSource.frontmatter,
+        scope: mdxSource.scope,
+      };
+    }),
+  );
+
+  return posts;
 }
 
 export function getBlogPosts() {
@@ -50,13 +61,13 @@ export type Scope = {
   };
 };
 
-export type Frontmatter = {
+export type Metadata = {
   title: string;
   summary?: string;
   publishedAt?: string;
 };
 
-export function serializeMDX(source: string) {
+function serializeMDX(source: string) {
   const options: EvaluateOptions = {
     mdxOptions: {
       remarkPlugins: [
@@ -98,7 +109,7 @@ export function serializeMDX(source: string) {
     vfileDataIntoScope: ['toc', 'readingTime'],
   };
 
-  return serialize<Frontmatter, Scope>({
+  return serialize<Metadata, Scope>({
     source,
     options,
   });
