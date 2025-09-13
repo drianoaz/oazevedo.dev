@@ -9,6 +9,7 @@ import type { EvaluateOptions } from 'next-mdx-remote-client/rsc';
 import { serialize } from 'next-mdx-remote-client/serialize';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeSlug from 'rehype-slug';
+import emoji from 'remark-emoji';
 import remarkFlexibleToc, { TocItem } from 'remark-flexible-toc';
 import remarkGfm from 'remark-gfm';
 import readingTime from 'remark-reading-time';
@@ -72,8 +73,9 @@ function serializeMDX(source: string) {
     mdxOptions: {
       remarkPlugins: [
         remarkGfm,
-        [remarkFlexibleToc, { maxDepth: 3 }],
         readingTime,
+        emoji,
+        [remarkFlexibleToc, { maxDepth: 3 }],
       ],
       rehypePlugins: [
         [
