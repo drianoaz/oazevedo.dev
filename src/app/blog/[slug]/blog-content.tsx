@@ -75,7 +75,7 @@ export function BlogContent({
         </div>
       </header>
 
-      <article className="col-start-2 row-start-2 mx-auto prose prose-xl px-4 pb-4 prose-invert">
+      <article className="col-start-2 row-start-2 mx-auto prose prose-xl w-full px-4 pb-4 prose-invert prose-table:my-0">
         <MDXClient {...mdxSource} components={components} />
       </article>
 
