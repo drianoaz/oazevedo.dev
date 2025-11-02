@@ -30,7 +30,7 @@ export function BlogContent({
   const { title, summary, publishedAt } = metadata;
 
   return (
-    <section className="mx-auto grid grid-cols-[1fr_auto_1fr]">
+    <section className="mx-auto grid-cols-[1fr_auto_1fr] xl:grid">
       <script
         type="application/ld+json"
         suppressHydrationWarning
