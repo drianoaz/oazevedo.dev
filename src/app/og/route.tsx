@@ -30,75 +30,73 @@ export async function GET(req: NextRequest) {
   const title = searchParams.get('title') || 'oazevedo.dev';
 
   return new ImageResponse(
-    (
-      <div
+    <div
+      style={{
+        width: '1200px',
+        height: '630px',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        backgroundColor: '#0c0a0a',
+        padding: '60px',
+        color: '#fff',
+        border: '10px solid #fff',
+      }}
+    >
+      <h1
         style={{
-          width: '1200px',
-          height: '630px',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          backgroundColor: '#0c0a0a',
-          padding: '60px',
+          fontSize: 80,
           color: '#fff',
-          border: '10px solid #fff',
+          margin: 0,
+          lineHeight: 1.2,
         }}
       >
-        <h1
-          style={{
-            fontSize: 80,
-            color: '#fff',
-            margin: 0,
-            lineHeight: 1.2,
-          }}
-        >
-          {title}
-        </h1>
+        {title}
+      </h1>
 
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          marginTop: 'auto',
+        }}
+      >
+        <img
+          src="https://avatars.githubusercontent.com/u/15058771?v=4"
+          width="120"
+          height="120"
+          alt="Github user profile pic"
+          style={{
+            borderRadius: '50%',
+            marginRight: '20px',
+            border: '3px solid #fff',
+          }}
+        />
         <div
           style={{
             display: 'flex',
-            alignItems: 'center',
-            marginTop: 'auto',
+            flexDirection: 'column',
           }}
         >
-          <img
-            src="https://avatars.githubusercontent.com/u/15058771?v=4"
-            width="120"
-            height="120"
-            alt="Github user profile pic"
-            style={{
-              borderRadius: '50%',
-              marginRight: '20px',
-              border: '3px solid #fff',
-            }}
-          />
           <div
             style={{
-              display: 'flex',
-              flexDirection: 'column',
+              fontSize: 30,
+              color: '#fff',
             }}
           >
-            <div
-              style={{
-                fontSize: 30,
-                color: '#fff',
-              }}
-            >
-              Adriano de Azevedo
-            </div>
-            <div
-              style={{
-                fontSize: 25,
-                color: '#fff',
-              }}
-            >
-              https://oazevedo.dev
-            </div>
+            Adriano de Azevedo
+          </div>
+          <div
+            style={{
+              fontSize: 25,
+              color: '#fff',
+            }}
+          >
+            https://oazevedo.dev
           </div>
         </div>
       </div>
-    ),
+    </div>,
     {
       width: 1200,
       height: 630,
