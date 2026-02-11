@@ -1,12 +1,9 @@
-import { FlatCompat } from '@eslint/eslintrc';
 import eslint from '@eslint/js';
+import { defineConfig, globalIgnores } from 'eslint/config';
+import nextVitals from 'eslint-config-next/core-web-vitals';
 import importPlugin from 'eslint-plugin-import';
 import prettierConfigRecommended from 'eslint-plugin-prettier/recommended';
-import { config as tsConfig, configs as tsConfigs } from 'typescript-eslint';
-
-const compat = new FlatCompat({
-  baseDirectory: import.meta.dirname,
-});
+import { configs as tsConfigs } from 'typescript-eslint';
 
 /**
  * Since eslint-plugin-import@2.32.0, the Flat config to TypeScript now includes the import plugin in its definitions.
@@ -15,29 +12,36 @@ const compat = new FlatCompat({
  * ConfigError: Config "import/typescript": Key "plugins": Cannot redefine plugin "import".
  */
 const nextConfigWithoutImportPlugin = [
-  importPlugin.flatConfigs.recommended,
-  ...compat
-    .config({
-      extends: ['next/core-web-vitals'],
-    })
-    .map((item) => {
-      if (item?.plugins?.['import']) {
-        delete item.plugins['import'];
-        return item;
-      }
-
+  ...nextVitals.map((item) => {
+    if (item?.plugins?.['import']) {
+      delete item.plugins['import'];
       return item;
-    }),
+    }
+
+    return item;
+  }),
 ];
 
-export default tsConfig(
+/**
+ * @type {import("eslint").Linter.Config}
+ * */
+export default defineConfig(
   eslint.configs.recommended,
   ...nextConfigWithoutImportPlugin,
   tsConfigs.recommended,
   prettierConfigRecommended,
+  importPlugin.flatConfigs.recommended,
   {
     files: ['**/*.{ts,tsx}'],
     extends: [importPlugin.flatConfigs.typescript],
+  },
+  {
+    settings: {
+      'import/resolver': {
+        typescript: true,
+        node: true,
+      },
+    },
   },
   {
     rules: {
@@ -139,7 +143,5 @@ export default tsConfig(
       ],
     },
   },
-  {
-    ignores: ['.next/', 'next-env.d.ts'],
-  },
+  globalIgnores(['.next/**', 'out/**', 'build/**', 'next-env.d.ts']),
 );
