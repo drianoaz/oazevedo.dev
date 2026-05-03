@@ -63,8 +63,8 @@ export async function GET(req: NextRequest) {
       >
         <img
           src="https://avatars.githubusercontent.com/u/15058771?v=4"
-          width="120"
-          height="120"
+          width={120}
+          height={120}
           alt="Github user profile pic"
           style={{
             borderRadius: '50%',

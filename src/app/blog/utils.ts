@@ -81,7 +81,10 @@ function serializeMDX(source: string) {
         [
           rehypeShiki,
           {
-            theme: 'dark-plus',
+            themes: {
+              dark: 'dark-plus',
+            },
+            defaultColor: 'dark',
             inline: 'tailing-curly-colon',
             transformers: [
               transformerMetaDiff(),
