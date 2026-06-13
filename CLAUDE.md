@@ -13,7 +13,13 @@ npm run check:prettier  # Prettier format check
 npm run format          # Auto-format with Prettier
 ```
 
-There is no test framework — use `lint`, `check:types`, and `check:prettier` to validate code quality.
+Unit tests run with **Vitest** (`src/**/*.test.ts(x)`); E2E guardrails with **Playwright** (`e2e/`).
+
+```bash
+npm run test           # Vitest unit tests (run once)
+npm run test:watch     # Vitest in watch mode
+npm run test:e2e       # Playwright E2E tests
+```
 
 ## Architecture
 
