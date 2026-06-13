@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Cat } from '@/components/cat';
+import { Elis } from '@/components/elis';
 import { Footer } from '@/components/footer';
 import { Header } from '@/components/header';
 import './globals.css';
@@ -20,7 +20,7 @@ export default function RootLayout({
         <Header />
         <div className="flex-1">{children}</div>
         <Footer />
-        <Cat />
+        <Elis />
       </body>
     </html>
   );
