@@ -10,7 +10,10 @@
     "check:types": "tsc",
     "check:prettier": "prettier --check .",
     "format": "prettier --write .",
-    "prepare": "is-ci || husky"
+    "prepare": "is-ci || husky",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@mdx-js/loader": "^3.1.1",
@@ -57,7 +60,13 @@
     "remark-reading-time": "^2.0.2",
     "tailwindcss": "^4.1.11",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.39.0"
+    "typescript-eslint": "^8.39.0",
+    "@playwright/test": "latest",
+    "@testing-library/jest-dom": "latest",
+    "@testing-library/react": "latest",
+    "@vitest/coverage-v8": "latest",
+    "jsdom": "latest",
+    "vitest": "latest"
   },
   "lint-staged": {
     "*": "prettier --ignore-unknown --write",
