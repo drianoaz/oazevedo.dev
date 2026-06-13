@@ -52,6 +52,53 @@ export function getBlogPosts() {
   return getMDXData(path.join(process.cwd(), 'src', 'app', 'blog', 'posts'));
 }
 
+function parseFrontmatter(source: string): Metadata {
+  const match = source.match(/^---\n([\s\S]+?)\n---/);
+  if (!match) {
+    return { title: '', summary: '', publishedAt: '' };
+  }
+
+  const result: Record<string, string> = {};
+  match[1].split('\n').forEach((line) => {
+    const colon = line.indexOf(':');
+    if (colon === -1) {
+      return;
+    }
+    const key = line.slice(0, colon).trim();
+    let value = line.slice(colon + 1).trim();
+    if (/^['"]/.test(value)) {
+      value = value.slice(1, -1);
+    }
+    result[key] = value;
+  });
+
+  return result as Metadata;
+}
+
+function estimateReadingTime(source: string) {
+  const content = source.replace(/^---[\s\S]+?---/, '');
+  const words = content.trim().split(/\s+/).length;
+  const minutes = words / 200;
+  return { minutes, words };
+}
+
+export function getBlogPostsMeta() {
+  const dir = path.join(process.cwd(), 'src', 'app', 'blog', 'posts');
+  return getMDXFiles(dir)
+    .map((file) => {
+      const source = readMDXFile(path.join(dir, file));
+      const slug = path.basename(file, path.extname(file));
+      const metadata = parseFrontmatter(source);
+      const readingTime = estimateReadingTime(source);
+      return { slug, metadata, readingTime };
+    })
+    .sort(
+      (a, b) =>
+        new Date(b.metadata.publishedAt).getTime() -
+        new Date(a.metadata.publishedAt).getTime(),
+    );
+}
+
 export type Scope = {
   toc?: TocItem[];
   readingTime?: {
