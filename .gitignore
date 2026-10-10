@@ -42,3 +42,6 @@ next-env.d.ts
 
 # eslint
 .eslintcache
+
+# spec-driven workflow artifacts
+/.specs/
