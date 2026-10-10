@@ -30,7 +30,7 @@ export function BlogContent({
   const { title, summary, publishedAt } = metadata;
 
   return (
-    <section className="mx-auto grid-cols-[1fr_auto_1fr] xl:grid">
+    <section className="xl:col-span-full xl:grid xl:grid-cols-subgrid xl:content-start">
       <script
         type="application/ld+json"
         suppressHydrationWarning
@@ -51,7 +51,7 @@ export function BlogContent({
           }),
         }}
       />
-      <header className="col-start-2 col-end-3 mx-auto prose prose-xl px-4 py-12 prose-invert">
+      <header className="col-start-2 col-end-3 mx-auto prose prose-xl w-full px-4 py-12 prose-invert xl:w-[65ch]">
         <h1>{title}</h1>
         {summary && (
           <p className="text-left text-lg text-gray-300">{summary}</p>
@@ -75,7 +75,7 @@ export function BlogContent({
         </div>
       </header>
 
-      <article className="col-start-2 row-start-2 mx-auto prose prose-xl w-full px-4 pb-4 prose-invert prose-table:my-0">
+      <article className="col-start-2 row-start-2 mx-auto prose prose-xl w-full px-4 pb-4 prose-invert xl:w-[65ch] prose-table:my-0">
         <MDXClient {...mdxSource} components={components} />
       </article>
 

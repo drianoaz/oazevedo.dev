@@ -17,6 +17,10 @@ import { transformerCodeBlock } from '@/lib/shiki/transformer-code-block';
 import { transformerMetaDiff } from '@/lib/shiki/transformer-meta-diff';
 
 function getMDXFiles(dir: string) {
+  if (!fs.existsSync(dir)) {
+    return [];
+  }
+
   return fs.readdirSync(dir).filter((file) => {
     return path.extname(file) === '.mdx';
   });
@@ -35,6 +39,8 @@ async function getMDXData(dir: string) {
       const slug = path.basename(file, path.extname(file));
       const mdxSource = await serializeMDX(content);
 
+      validateMetadata(file, mdxSource.frontmatter);
+
       return {
         content,
         slug,
@@ -48,8 +54,35 @@ async function getMDXData(dir: string) {
   return posts;
 }
 
-export function getBlogPosts() {
-  return getMDXData(path.join(process.cwd(), 'src', 'app', 'blog', 'posts'));
+function validateMetadata(file: string, metadata: Partial<Metadata>) {
+  for (const field of ['title', 'summary', 'publishedAt'] as const) {
+    if (!metadata[field]) {
+      throw new Error(`${file}: missing frontmatter field "${field}"`);
+    }
+  }
+
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(String(metadata.publishedAt))) {
+    throw new Error(`${file}: "publishedAt" must be in the YYYY-MM-DD format`);
+  }
+
+  if (metadata.draft !== undefined && typeof metadata.draft !== 'boolean') {
+    throw new Error(`${file}: "draft" must be true or false`);
+  }
+}
+
+export async function getBlogPosts() {
+  const dir =
+    process.env.BLOG_POSTS_DIR ??
+    path.join(process.cwd(), 'src', 'app', 'blog', 'posts');
+  const posts = await getMDXData(dir);
+
+  return posts
+    .filter((post) => {
+      return process.env.NODE_ENV !== 'production' || !post.metadata.draft;
+    })
+    .sort((a, b) => {
+      return b.metadata.publishedAt.localeCompare(a.metadata.publishedAt);
+    });
 }
 
 export type Scope = {
@@ -66,6 +99,7 @@ export type Metadata = {
   title: string;
   summary: string;
   publishedAt: string;
+  draft?: boolean;
 };
 
 function serializeMDX(source: string) {
