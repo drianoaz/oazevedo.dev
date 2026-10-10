@@ -4,6 +4,8 @@ import { baseUrl, siteName } from '@/lib/constants';
 import { getBlogPosts } from '../utils';
 import { BlogContent } from './blog-content';
 
+export const dynamicParams = false;
+
 export async function generateStaticParams() {
   const posts = await getBlogPosts();
 
@@ -26,7 +28,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   });
 
   if (!post) {
-    throw new Error('Post not found');
+    notFound();
   }
 
   const {

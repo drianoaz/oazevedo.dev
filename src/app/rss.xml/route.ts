@@ -7,12 +7,12 @@ export const dynamic = 'force-static';
 export async function GET() {
   const feed = new Feed({
     title: `${siteName} - RSS Feed`,
-    description: 'This is my blog feed!',
+    description: 'Artigos sobre desenvolvimento frontend moderno.',
     id: baseUrl,
     link: baseUrl,
     language: 'pt-BR',
     image: `${baseUrl}/og?title=${encodeURIComponent(siteName)}`,
-    favicon: `${baseUrl}/favicon.ico`,
+    favicon: `${baseUrl}/icon.svg`,
     copyright: `Todos os direitos reservados ${new Date().getFullYear()}, Adriano de Azevedo`,
     author: {
       name: 'Adriano de Azevedo',
@@ -23,27 +23,19 @@ export async function GET() {
 
   const posts = await getBlogPosts();
 
-  posts
-    .sort((a, b) => {
-      if (new Date(a.metadata.publishedAt) > new Date(b.metadata.publishedAt)) {
-        return -1;
-      }
-
-      return 1;
-    })
-    .forEach((post) => {
-      feed.addItem({
-        title: post.metadata.title,
-        id: `${baseUrl}/blog/${post.slug}`,
-        link: `${baseUrl}/blog/${post.slug}`,
-        image: {
-          url: `${baseUrl}/og?title=${encodeURIComponent(post.metadata.title)}`,
-          type: 'image/png',
-        },
-        description: post.metadata.summary,
-        date: new Date(post.metadata.publishedAt),
-      });
+  posts.forEach((post) => {
+    feed.addItem({
+      title: post.metadata.title,
+      id: `${baseUrl}/blog/${post.slug}`,
+      link: `${baseUrl}/blog/${post.slug}`,
+      image: {
+        url: `${baseUrl}/og?title=${encodeURIComponent(post.metadata.title)}`,
+        type: 'image/png',
+      },
+      description: post.metadata.summary,
+      date: new Date(post.metadata.publishedAt),
     });
+  });
 
   return new Response(feed.rss2(), {
     headers: {
